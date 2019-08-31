@@ -1,25 +1,29 @@
 :root {
-    --background: #ffffff;
+    --background: #8d8a8ace;
     --calculator:  #e2e2e2;
     --buttons: #f1f1f1;
+    --buttons-hover: #ffffff11;
+    --buttons-active: #cccccc;
 }
 
 body {
     font-family: arial,sans-serif;
     font-size: 26px;
     background-color: var(--background);
+    height: 100vh;
+    display: flex;
+    justify-content: start;
+    align-items: center;
 }
 
 #main {
     background-color: var(--calculator);
     box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.30);
-    /* border-radius: 2px; */
     height: 60vh;
     min-height: 350px;
     width: 50vw;
     min-width: 25vw;
     max-width: 420px;
-    margin: 0 auto;
     padding: 5px;
 }
 
@@ -32,7 +36,7 @@ body {
 #display {
     padding-right: 5px;
     text-align: end;
-    flex-basis: 27%;
+    flex-basis: 30%;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -44,8 +48,8 @@ body {
 }
 
 #current {
-    font-size: 1.6em;
-    margin: 10px 0;
+    font-size: 1.8em;
+    margin-top: 10px;
 }
 
 #buttons {
@@ -60,8 +64,28 @@ body {
     border: none;
 }
 
+.button:hover {
+    background-color: var(--buttons-hover);
+    box-shadow: 0px 0px 0px 0.8px #cacaca;
+}
+
+.button:active {
+    transition: background-color 0.05s;
+    background-color: var(--buttons-active);
+}
+
 .button:focus {
     outline: none;
+}
+
+.operator {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.5em;
+}
+
+.digit {
+    font-weight: normal;
+    font-size: 1em;
 }
 
 /* body: #fce7a9;
