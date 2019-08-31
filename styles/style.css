@@ -4,6 +4,7 @@
     --buttons: #f1f1f1;
     --buttons-hover: #ffffff11;
     --buttons-active: #cccccc;
+    --buttons-active-mobile: #e6e6e6;
 }
 
 body {
@@ -65,15 +66,16 @@ body {
     border: none;
 }
 
+.button:active {
+    transition: background-color 0.05s;
+    background-color: var(--buttons-active);
+}
+
 .button:hover {
     background-color: var(--buttons-hover);
     box-shadow: 0px 0px 0px 0.8px #cacaca;
 }
 
-.button:active {
-    transition: background-color 0.05s;
-    background-color: var(--buttons-active);
-}
 
 .button:focus {
     outline: none;
@@ -88,6 +90,28 @@ body {
     font-weight: normal;
     font-size: 1em;
 }
+
+@media only screen and (max-width: 572px) {
+    body {
+        font-size: 20px;
+    }
+
+    #main {
+        min-width: 100vw;
+        height: 100vh;
+        padding: 0;
+    }
+
+    .button:hover {
+        background-color: var(--buttons);
+        box-shadow: none;
+    }
+
+    .button:active {
+        transition: background-color 0.01s;
+        background-color: var(--buttons-active-mobile);
+    }
+} 
 
 /* body: #fce7a9;
 main: #f8d772;
