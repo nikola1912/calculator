@@ -93,7 +93,7 @@ body {
 
 @media only screen and (max-width: 572px) {
     body {
-        font-size: 20px;
+        font-size: 24px;
     }
 
     #main {
@@ -114,6 +114,8 @@ body {
         background-color: var(--buttons-active-mobile);
     }
 } 
+
+
 
 /* body: #fce7a9;
 main: #f8d772;
