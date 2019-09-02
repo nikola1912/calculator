@@ -2,6 +2,7 @@
     --background: #8d8a8ace;
     --calculator:  #e2e2e2;
     --buttons: #f1f1f1;
+    --buttons-disabled: #cccccc7e;
     --buttons-hover: #ffffff11;
     --buttons-active: #cccccc;
     --buttons-active-mobile: #e6e6e6;
@@ -57,7 +58,7 @@ body {
 #buttons {
     flex-grow: 1;
     display: grid;
-    grid-template: repeat(5, 1fr) / repeat(4, 1fr);
+    grid-template: auto / repeat(4, 1fr);
     grid-gap: 2px;    
 }
 
@@ -66,19 +67,30 @@ body {
     border: none;
 }
 
-.button:active {
-    transition: background-color 0.05s;
-    background-color: var(--buttons-active);
+.button:disabled {
+    color: var(--buttons-disabled);
 }
 
-.button:hover {
+.button:hover:enabled {
     background-color: var(--buttons-hover);
     box-shadow: 0px 0px 0px 0.8px #cacaca;
 }
 
+.button:active:enabled {
+    transition: background-color 0.05s;
+    background-color: var(--buttons-active);
+}
 
-.button:focus {
+.button:focus:enabled {
     outline: none;
+}
+
+#oneFraction {
+    font-size: 1.25em;
+}
+
+#twoSquare {
+    font-size: 0.7em;
 }
 
 .operator {
@@ -91,7 +103,7 @@ body {
     font-size: 1em;
 }
 
-@media only screen and (max-width: 572px) {
+@media only screen and (max-width: 675px) {
     body {
         font-size: 24px;
     }
@@ -104,12 +116,12 @@ body {
 
     /* Brute-force preventing the button from staying active/hovered
        when clicked. You should make this better. */
-    .button:hover {
+    .button:hover:enabled {
         background-color: var(--buttons);
         box-shadow: none;
     }
 
-    .button:active {
+    .button:active:enabled {
         transition: background-color 0.01s;
         background-color: var(--buttons-active-mobile);
     }
