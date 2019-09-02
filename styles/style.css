@@ -102,6 +102,8 @@ body {
         padding: 0;
     }
 
+    /* Brute-force preventing the button from staying active/hovered
+       when clicked. You should make this better. */
     .button:hover {
         background-color: var(--buttons);
         box-shadow: none;
