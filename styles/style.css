@@ -35,15 +35,6 @@ body {
     flex-direction: column;
 }
 
-#display {
-    padding-right: 5px;
-    text-align: end;
-    flex-basis: 30%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-}
-
 #menu {
     padding: 5px;
     font-size: 1.3em;
@@ -62,6 +53,15 @@ body {
 
 #navBtn:active {
     background-color: var(--buttons-active);
+}
+
+#display {
+    padding-right: 5px;
+    text-align: end;
+    flex-basis: 30%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 
 #previous {
