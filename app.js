@@ -104,7 +104,11 @@ function writeToGlobal(operator) {
     let previousDisplay = document.getElementById("previous");
     let currentNumber = Number(document.getElementById("current").textContent);
     if (!globalStates.operatorState || globalStates.accumulatorState) {
-        previousDisplay.textContent += `${currentNumber} ${operator} `; 
+        if (currentNumber.toString()[0] === "-") {
+            previousDisplay.textContent += `(${currentNumber}) ${operator} `; 
+        } else {
+            previousDisplay.textContent += `${currentNumber} ${operator} `; 
+        }
     } else {
         previousDisplay.textContent = previousDisplay.textContent.slice(0, -2);
         previousDisplay.textContent += `${operator} `;
