@@ -53,6 +53,10 @@ function handleOperator(operatorType) {
         case "clearAll":
             handleClearAll();
             break;
+
+        case "sign":
+            handleSignChange();
+            break;
     }
 }
     
@@ -139,6 +143,13 @@ function handleClearAll() {
     globalStates.number = 0;
     globalStates.operator = "+";
     globalStates.operatorState = false;
+}
+
+function handleSignChange() {
+    let currentDisplay = document.getElementById("current");
+    let currentNumber = Number(currentDisplay.textContent);
+    currentNumber *= (-1);
+    currentDisplay.textContent = currentNumber;
 }
 
 function handleButtonClick(e) {
