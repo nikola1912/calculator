@@ -65,7 +65,8 @@ const globalStates = {
     operator: "+",
     number: 0,
     accumulatorNumber: 0, //The number you accumulate to the global number while pressin "="
-    accumulatorState: false //Represents if the accumulator is ON (if "=" is being used)
+    accumulatorState: false, //Represents if the accumulator is ON (if "=" is being used)
+    displayFontSize: getComputedStyle(document.getElementById("current")).fontSize
 }
 
 function handleEqual() {
@@ -147,6 +148,7 @@ function handleClearAll() {
     globalStates.number = 0;
     globalStates.operator = "+";
     globalStates.operatorState = false;
+    currentDisplay.style.fontSize = globalStates.displayFontSize;
 }
 
 function handleSignChange() {
@@ -156,11 +158,44 @@ function handleSignChange() {
     currentDisplay.textContent = currentNumber;
 }
 
+function handleDisplayOverflow() {
+    let currentDisplay = document.getElementById("current");
+    if (isDisplayOverflow(currentDisplay)) {
+        let displayFont = getComputedStyle(currentDisplay).fontSize;
+        displayFont = Number(parseFloat(displayFont).toFixed(2));
+        displayFont -= 5;
+        currentDisplay.style.fontSize = `${displayFont}px`;
+    } else {
+
+    }
+    //     let displayFont = getComputedStyle(currentDisplay);
+    //     let displayFontSize = convertPixelToEm(displayFont.fontSize);
+    //     displayFontSize -= 0.2;
+    //     currentDisplay.style.fontSize = `${displayFontSize}em`;
+    // } else {
+    //     // currentDisplay.style.fontSize = `${displayFontSize}em`;
+    // }
+        
+}
+
+function isDisplayOverflow(element) {
+    return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
+}
+
+function convertPixelToEm(pixelVal) {
+    let bodyPixelSize = getComputedStyle(document.body).fontSize;
+    bodyPixelSize = Number(parseFloat(bodyPixelSize).toFixed(2));
+    let pixeValInNums = Number(parseFloat(pixelVal).toFixed(2))
+    let emValue = pixeValInNums / bodyPixelSize;
+    return Number(emValue.toFixed(2));
+}
+
 function handleButtonClick(e) {
     if (e.target !== e.currentTarget) { 
         /digit/.test(e.target.className) ? //Checks if the clicked button is a digit or an operator
-        handleDigit(Number(e.target.id)) :
-        handleOperator(e.target.id);
+            handleDigit(Number(e.target.id)) :
+            handleOperator(e.target.id);
+        handleDisplayOverflow()  
     }
     e.stopPropagation();
 }
