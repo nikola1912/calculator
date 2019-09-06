@@ -165,17 +165,7 @@ function handleDisplayOverflow() {
         displayFont = Number(parseFloat(displayFont).toFixed(2));
         displayFont -= 5;
         currentDisplay.style.fontSize = `${displayFont}px`;
-    } else {
-
-    }
-    //     let displayFont = getComputedStyle(currentDisplay);
-    //     let displayFontSize = convertPixelToEm(displayFont.fontSize);
-    //     displayFontSize -= 0.2;
-    //     currentDisplay.style.fontSize = `${displayFontSize}em`;
-    // } else {
-    //     // currentDisplay.style.fontSize = `${displayFontSize}em`;
-    // }
-        
+    }       
 }
 
 function isDisplayOverflow(element) {
