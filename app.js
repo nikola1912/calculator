@@ -21,6 +21,13 @@ function handlePercentage() {
     currentDisplay.textContent = newNumber;
 }
 
+function handleRoot() {
+    let currentDisplay = document.getElementById("current");
+    let currentNumber = Number(currentDisplay.textContent);
+    let newNumber = Math.pow(currentNumber, 1/2);
+    currentDisplay.textContent = newNumber;
+}
+
 function handleDigit(digit) {
     let display = document.getElementById("current");
     if (display.textContent == 0 || globalStates.operatorState || globalStates.accumulatorState) { 
@@ -67,6 +74,10 @@ function handleOperator(operatorType) {
 
         case "percentage":
             handlePercentage();
+            break;
+
+        case "root":
+            handleRoot();
             break;
     }
 }
