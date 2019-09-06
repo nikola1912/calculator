@@ -14,6 +14,13 @@ function handleDivision(x, y) {
     return x / y;
 }
 
+function handlePercentage() {
+    let currentDisplay = document.getElementById("current");
+    let currentNumber = Number(currentDisplay.textContent);
+    let newNumber = currentNumber/100;
+    currentDisplay.textContent = newNumber;
+}
+
 function handleDigit(digit) {
     let display = document.getElementById("current");
     if (display.textContent == 0 || globalStates.operatorState || globalStates.accumulatorState) { 
@@ -56,6 +63,10 @@ function handleOperator(operatorType) {
 
         case "sign":
             handleSignChange();
+            break;
+
+        case "percentage":
+            handlePercentage();
             break;
     }
 }
