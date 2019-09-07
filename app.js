@@ -48,7 +48,6 @@ function handleFraction() {
 
 function writeOperatorToGlobal(operator, number, isOperatorOn=globalStates.advancedOperatorState) {
     let previousDisplay = document.getElementById("previous");
-
     if (!isOperatorOn) {
         globalStates.advancedOperatorState = true;
         switch(operator) {
@@ -141,6 +140,10 @@ function handleOperator(operatorType) {
 
         case "fraction":
             handleFraction();
+            break;
+
+        case "dot":
+            handleDecimalPoint();
             break;
     }
 }
@@ -251,6 +254,15 @@ function handleSignChange() {
     currentDisplay.textContent = currentNumber;
     globalStates.operatorState = false;
     globalStates.advancedOperatorState = false;
+}
+
+function handleDecimalPoint() {
+    let currentDisplay = document.getElementById("current");
+    let currentDisplayContent = currentDisplay.textContent;
+    let currentNumber = Number(currentDisplay.textContent);
+    if (currentDisplayContent[currentDisplayContent.length-1] !== ".") {
+        currentDisplay.textContent += "."
+    }
 }
 
 function handleDisplayOverflow() {
