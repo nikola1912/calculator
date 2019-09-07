@@ -19,6 +19,7 @@ function handlePercentage() {
     let currentNumber = Number(currentDisplay.textContent);
     let newNumber = currentNumber/100;
     currentDisplay.textContent = newNumber;
+    writeOperatorToGlobal("percentage", newNumber);
 }
 
 function handleRoot() {
@@ -26,6 +27,7 @@ function handleRoot() {
     let currentNumber = Number(currentDisplay.textContent);
     let newNumber = Math.pow(currentNumber, 1/2);
     currentDisplay.textContent = newNumber;
+    writeOperatorToGlobal("root", currentNumber);
 }
 
 function handleSquare() {
@@ -33,7 +35,51 @@ function handleSquare() {
     let currentNumber = Number(currentDisplay.textContent);
     let newNumber = Math.pow(currentNumber, 2);
     currentDisplay.textContent = newNumber;
+    writeOperatorToGlobal("square", currentNumber);
+}
 
+function handleFraction() {
+    let currentDisplay = document.getElementById("current");
+    let currentNumber = Number(currentDisplay.textContent);
+    let newNumber = 1/currentNumber;
+    currentDisplay.textContent = newNumber;
+    writeOperatorToGlobal("fraction", currentNumber);
+}
+
+function writeOperatorToGlobal(operator, number, isOperatorOn=globalStates.advancedOperatorState) {
+    let previousDisplay = document.getElementById("previous");
+
+    if (!isOperatorOn) {
+        globalStates.advancedOperatorState = true;
+        switch(operator) {
+            case "percentage":
+                previousDisplay.textContent += `${number} `;
+                break;
+            
+            case "root":
+                previousDisplay.textContent += `√(${number}) `;
+                break;
+            
+            case "square":
+                previousDisplay.textContent += `sqr(${number}) `;
+                break;
+    
+            case "fraction":
+                previousDisplay.textContent += `1/(${number}) `;
+                break;
+        }
+    } else {
+        let lastAdvancedOperator = findLastAdvancedOperator();
+        let globalText = previousDisplay.textContent
+        previousDisplay.textContent = globalText.slice(0, globalText.length - lastAdvancedOperator.length - 1); 
+        writeOperatorToGlobal(operator, lastAdvancedOperator, false);
+    }
+}
+
+function findLastAdvancedOperator() {
+    let previousDisplay = document.getElementById("previous").textContent;
+    previousDisplay = previousDisplay.split(" ");
+    return previousDisplay[previousDisplay.length-2];
 }
 
 function handleDigit(digit) {
@@ -42,6 +88,7 @@ function handleDigit(digit) {
         display.textContent = ""; 
         globalStates.operatorState = false;
         globalStates.accumulatorState = false;
+        globalStates.advancedOperatorState = false;
     }
     display.textContent += digit;
 }
@@ -91,11 +138,16 @@ function handleOperator(operatorType) {
         case "square":
             handleSquare();
             break;
+
+        case "fraction":
+            handleFraction();
+            break;
     }
 }
     
 const globalStates = {
     operatorState: false, //Represents if the operator has been clicked
+    advancedOperatorState: false,
     operator: "+",
     number: 0,
     accumulatorNumber: 0, //The number you accumulate to the global number while pressin "="
@@ -133,19 +185,24 @@ function handleOperation(operator) {
         globalStates.operatorState = true;
     } 
     globalStates.operator = operator;
+    globalStates.advancedOperatorState = false;
 }
 
 function writeToGlobal(operator) {
     let previousDisplay = document.getElementById("previous");
     let currentNumber = Number(document.getElementById("current").textContent);
-    if (!globalStates.operatorState || globalStates.accumulatorState) {
-        if (currentNumber.toString()[0] === "-") {
-            previousDisplay.textContent += `(${currentNumber}) ${operator} `; 
+    if (!globalStates.advancedOperatorState) {       
+        if (!globalStates.operatorState || globalStates.accumulatorState) {
+            if (currentNumber.toString()[0] === "-") {
+                previousDisplay.textContent += `(${currentNumber}) ${operator} `; 
+            } else {
+                previousDisplay.textContent += `${currentNumber} ${operator} `; 
+            }
         } else {
-            previousDisplay.textContent += `${currentNumber} ${operator} `; 
+            previousDisplay.textContent = previousDisplay.textContent.slice(0, -2);
+            previousDisplay.textContent += `${operator} `;
         }
     } else {
-        previousDisplay.textContent = previousDisplay.textContent.slice(0, -2);
         previousDisplay.textContent += `${operator} `;
     }
 }
@@ -172,6 +229,7 @@ function handleClearDigit() {
         display.textContent = "0" :
         display.textContent = display.textContent.slice(0, -1);
     globalStates.operatorState = false;
+    globalStates.advancedOperatorState = false;
 }
     
 function handleClearAll() {
@@ -182,6 +240,7 @@ function handleClearAll() {
     globalStates.number = 0;
     globalStates.operator = "+";
     globalStates.operatorState = false;
+    globalStates.advancedOperatorState = false;
     currentDisplay.style.fontSize = globalStates.displayFontSize;
 }
 
@@ -190,6 +249,8 @@ function handleSignChange() {
     let currentNumber = Number(currentDisplay.textContent);
     currentNumber *= (-1);
     currentDisplay.textContent = currentNumber;
+    globalStates.operatorState = false;
+    globalStates.advancedOperatorState = false;
 }
 
 function handleDisplayOverflow() {

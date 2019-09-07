@@ -87,6 +87,10 @@ body {
     border: none;
 }
 
+.button > * {
+    pointer-events: none;
+}
+
 .button:disabled {
     color: var(--buttons-disabled);
 }
