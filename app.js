@@ -46,6 +46,17 @@ function handleFraction() {
     writeOperatorToGlobal("fraction", currentNumber);
 }
 
+function handleFactorial() {
+    let currentDisplay = document.getElementById("current");
+    let currentNumber = Number(currentDisplay.textContent);
+    let newNumber = 1;
+    for (let i = 2; i <= currentNumber; i++) {
+        newNumber = newNumber * i;
+    }
+    currentDisplay.textContent = newNumber;
+    writeOperatorToGlobal("factorial", currentNumber);
+}
+
 function writeOperatorToGlobal(operator, number, isOperatorOn=globalStates.advancedOperatorState) {
     let previousDisplay = document.getElementById("previous");
     if (!isOperatorOn) {
@@ -65,6 +76,10 @@ function writeOperatorToGlobal(operator, number, isOperatorOn=globalStates.advan
     
             case "fraction":
                 previousDisplay.textContent += `1/(${number}) `;
+                break;
+
+            case "factorial":
+                previousDisplay.textContent += `fact(${number}) `;
                 break;
         }
     } else {
@@ -144,6 +159,10 @@ function handleOperator(operatorType) {
 
         case "dot":
             handleDecimalPoint();
+            break;
+
+        case "factorial":
+            handleFactorial();
             break;
     }
 }
