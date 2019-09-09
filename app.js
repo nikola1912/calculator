@@ -168,46 +168,61 @@ function handleOperator(operatorType) {
 }
     
 const globalStates = {
+    calculatorState: false,
     operatorState: false, //Represents if the operator has been clicked
     advancedOperatorState: false,
     operator: "+",
     number: 0,
     accumulatorNumber: 0, //The number you accumulate to the global number while pressin "="
     accumulatorState: false, //Represents if the accumulator is ON (if "=" is being used)
-    displayFontSize: getComputedStyle(document.getElementById("current")).fontSize
+    displayFontSize: getComputedStyle(document.getElementById("current")).fontSize //This is used when you use "clearAll" to reset it to default font size if it's changed
 }
 
 function handleEqual() {
-    let currentDisplay = document.getElementById("current");
-    let currentNumber = Number(currentDisplay.textContent);
-    let globalNumber = globalStates.number;
-    let operationResult;
-    if (!globalStates.accumulatorState) {
-        document.getElementById("previous").textContent = "";
-        globalStates.accumulatorNumber = currentNumber;
-        globalStates.accumulatorState = true;
+    if (globalStates.calculatorState === true) {
+        let currentDisplay = document.getElementById("current");
+        let currentNumber = Number(currentDisplay.textContent);
+        let globalNumber = globalStates.number;
+        let operationResult;
+        if (!globalStates.accumulatorState) {
+            document.getElementById("previous").textContent = "";
+            globalStates.accumulatorNumber = currentNumber;
+            globalStates.accumulatorState = true;
+            operationResult = handleMaths(globalStates.operator, globalNumber, globalStates.accumulatorNumber);
+        } else {
+            if (!globalStates.advancedOperatorState) { //If advanced operators are being clicked than the "equal" shouldn't keep activating them (they can only be used once)
+                operationResult = handleMaths(globalStates.operator, currentNumber, globalStates.accumulatorNumber);
+            }
+        }
         globalStates.operatorState = true;
-        operationResult = handleMaths(globalStates.operator, globalNumber, globalStates.accumulatorNumber);
-    } else {
-        operationResult = handleMaths(globalStates.operator, currentNumber, globalStates.accumulatorNumber);
+        currentDisplay.textContent = operationResult;
+        globalStates.number = operationResult;
     }
-    currentDisplay.textContent = operationResult;
-    globalStates.number = operationResult;
 }
 
 function handleOperation(operator) {
     writeToGlobal(operator);
     if (!globalStates.operatorState) {
+        let globalNumber;
         let currentDisplay = document.getElementById("current");
         let currentNumber = Number(currentDisplay.textContent);
-        let globalNumber = globalStates.number;
+        if (globalStates.accumulatorState) { // If accumulator ON reset the calculator so that you apply operator to the number in "current" instead of the number in accumulator 
+            globalNumber = 0;
+            globalStates.accumulatorState = false;
+            globalStates.operatorState = true;
+            globalStates.operator = "+";
+        } else {
+            globalNumber = globalStates.number;
+            globalStates.operatorState = true;
+        } 
         let operationResult = handleMaths(globalStates.operator, globalNumber, currentNumber);
         currentDisplay.textContent = operationResult;
         globalStates.number = operationResult;
-        globalStates.operatorState = true;
     } 
     globalStates.operator = operator;
     globalStates.advancedOperatorState = false;
+    globalStates.accumulatorState = false;
+    globalStates.calculatorState = true;
 }
 
 function writeToGlobal(operator) {
@@ -259,10 +274,12 @@ function handleClearAll() {
     let previousDisplay = document.getElementById("previous");
     currentDisplay.textContent = "0";
     previousDisplay.textContent = "";
-    globalStates.number = 0;
-    globalStates.operator = "+";
     globalStates.operatorState = false;
     globalStates.advancedOperatorState = false;
+    globalStates.operator = "+";
+    globalStates.number = 0;
+    globalStates.accumulatorNumber = 0;
+    globalStates.accumulatorState = false;
     currentDisplay.style.fontSize = globalStates.displayFontSize;
 }
 
