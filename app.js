@@ -99,7 +99,7 @@ function findLastAdvancedOperator() {
 
 function handleDigit(digit) {
     let display = document.getElementById("current");
-    if (display.textContent == 0 || globalStates.operatorState || globalStates.advancedOperatorState) { 
+    if ((display.textContent == 0 && !display.textContent.includes(".")) || globalStates.operatorState || globalStates.advancedOperatorState) { 
         display.textContent = ""; 
         globalStates.operatorState = false;
         if (globalStates.advancedOperatorState) {
