@@ -88,6 +88,7 @@ function writeOperatorToGlobal(operator, number, isOperatorOn=globalStates.advan
         previousDisplay.textContent = globalText.slice(0, globalText.length - lastAdvancedOperator.length - 1); 
         writeOperatorToGlobal(operator, lastAdvancedOperator, false);
     }
+    globalStates.operatorState = false;
 }
 
 function findLastAdvancedOperator() {
@@ -98,11 +99,13 @@ function findLastAdvancedOperator() {
 
 function handleDigit(digit) {
     let display = document.getElementById("current");
-    if (display.textContent == 0 || globalStates.operatorState || globalStates.accumulatorState) { 
+    if (display.textContent == 0 || globalStates.operatorState || globalStates.advancedOperatorState) { 
         display.textContent = ""; 
         globalStates.operatorState = false;
-        globalStates.accumulatorState = false;
-        globalStates.advancedOperatorState = false;
+        if (globalStates.advancedOperatorState) {
+            globalStates.advancedOperatorState = false;
+            document.getElementById("previous").textContent = "";
+        }
     }
     display.textContent += digit;
 }
@@ -179,7 +182,7 @@ const globalStates = {
 }
 
 function handleEqual() {
-    if (globalStates.calculatorState === true) {
+    if (globalStates.calculatorState) {
         let currentDisplay = document.getElementById("current");
         let currentNumber = Number(currentDisplay.textContent);
         let globalNumber = globalStates.number;
@@ -192,9 +195,12 @@ function handleEqual() {
         } else {
             if (!globalStates.advancedOperatorState) { //If advanced operators are being clicked than the "equal" shouldn't keep activating them (they can only be used once)
                 operationResult = handleMaths(globalStates.operator, currentNumber, globalStates.accumulatorNumber);
+            } else {
+                operationResult = currentNumber;
             }
         }
         globalStates.operatorState = true;
+        globalStates.advancedOperatorState = false;
         currentDisplay.textContent = operationResult;
         globalStates.number = operationResult;
     }
@@ -280,6 +286,7 @@ function handleClearAll() {
     globalStates.number = 0;
     globalStates.accumulatorNumber = 0;
     globalStates.accumulatorState = false;
+    globalStates.calculatorState = false;
     currentDisplay.style.fontSize = globalStates.displayFontSize;
 }
 
@@ -296,7 +303,7 @@ function handleDecimalPoint() {
     let currentDisplay = document.getElementById("current");
     let currentDisplayContent = currentDisplay.textContent;
     let currentNumber = Number(currentDisplay.textContent);
-    if (currentDisplayContent[currentDisplayContent.length-1] !== ".") {
+    if (!currentDisplayContent.includes(".")) {
         currentDisplay.textContent += "."
     }
 }
